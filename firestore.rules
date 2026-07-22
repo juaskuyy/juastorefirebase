@@ -4,9 +4,16 @@ service cloud.firestore {
     match /orders/{orderId} {
       allow read, write: if request.auth != null;
     }
-    match /publicClaims/{claimCode} {
+    match /counters/{counterId} {
+      allow read, write: if request.auth != null;
+    }
+    match /publicOrders/{orderId} {
       allow get: if true;
       allow list: if false;
+      allow create, update, delete: if request.auth != null;
+    }
+    match /customerLookups/{wa}/orders/{orderId} {
+      allow get, list: if true;
       allow create, update, delete: if request.auth != null;
     }
     match /{document=**} {

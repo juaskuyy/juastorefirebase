@@ -1,0 +1,17 @@
+
+:root{--bg:#e8e8ea;--card:#f7f7f8;--text:#202024;--muted:#6b6b72;--line:#b7b7bd;--dark:#343438;--ok:#315a3a;--warn:#7a581d;--bad:#7b3030}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#d6d6da,#f4f4f5);color:var(--text)}
+.wrap{max-width:1180px;margin:auto;padding:20px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
+.brand{display:flex;gap:12px;align-items:center}.logo{width:52px;height:52px;border-radius:15px;background:#343438;color:#fff;display:grid;place-items:center;font-weight:900;font-size:22px}
+.card{background:rgba(247,247,248,.96);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 12px 30px #00000014;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat strong{font-size:28px;display:block;margin-top:8px}
+.formgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.field label{font-size:13px;font-weight:700;display:block;margin-bottom:6px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #aaaab1;border-radius:10px;background:#fff;font-size:14px}
+button,.btn{border:0;border-radius:10px;padding:12px 16px;background:var(--dark);color:#fff;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block}
+button.secondary{background:#77777e}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+table{width:100%;border-collapse:collapse;min-width:900px}th,td{padding:11px;border-bottom:1px solid #d0d0d4;text-align:left;font-size:13px}
+.tablewrap{overflow:auto}.badge{padding:5px 9px;border-radius:999px;font-weight:800;font-size:12px}.aktif{background:#dcecdf;color:var(--ok)}.hampir{background:#f4e8ca;color:var(--warn)}.habis{background:#eed7d7;color:var(--bad)}
+.hidden{display:none!important}.notice{padding:11px;border-radius:10px;background:#e2e2e5;margin-top:12px}.login{max-width:440px;margin:70px auto}
+.searchbar{display:flex;gap:10px}.searchbar input{flex:1}.resultgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.item{padding:12px;background:#ededf0;border-radius:10px}.item small{display:block;color:var(--muted);margin-bottom:5px}
+@media(max-width:850px){.grid,.formgrid{grid-template-columns:1fr 1fr}.top{align-items:flex-start}.resultgrid{grid-template-columns:1fr}}
+@media(max-width:560px){.grid,.formgrid{grid-template-columns:1fr}.wrap{padding:12px}.searchbar{flex-direction:column}}
