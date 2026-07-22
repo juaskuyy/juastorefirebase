@@ -16,6 +16,11 @@ service cloud.firestore {
       allow get, list: if true;
       allow create, update, delete: if request.auth != null;
     }
+    match /warrantyLookups/{warrantyCode} {
+      allow get: if true;
+      allow list: if false;
+      allow create, update, delete: if request.auth != null;
+    }
     match /{document=**} {
       allow read, write: if false;
     }

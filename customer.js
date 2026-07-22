@@ -35,21 +35,35 @@ function esc(v){
     .replaceAll('>','&gt;')
     .replaceAll('"','&quot;');
 }
-function card(o,index){
+function orderCard(o){
   const w=warranty(o);
-  const safeId=esc(o.orderId);
-  const safeProduct=esc(o.product);
-  const safeName=esc(o.customerName);
-  const safeWa=esc(o.whatsapp);
-
   return `<section class="card">
-    <h3>${safeProduct} <span class="badge ${w.cls}">${w.label}</span></h3>
-
+    <h3>${esc(o.product)} <span class="badge ${w.cls}">${w.label}</span></h3>
     <div class="resultgrid">
-      <div class="item"><small>ID Order</small><b>${safeId}</b></div>
-      <div class="item"><small>Customer</small><b>${safeName}</b></div>
-      <div class="item"><small>WhatsApp</small><b>${safeWa}</b></div>
+      <div class="item"><small>ID Order</small><b>${esc(o.orderId)}</b></div>
+      <div class="item"><small>Customer</small><b>${esc(o.customerName)}</b></div>
+      <div class="item"><small>WhatsApp</small><b>${esc(o.whatsapp)}</b></div>
+      <div class="item"><small>Produk</small><b>${esc(o.product)}</b></div>
+      <div class="item"><small>Durasi</small><b>${esc(o.duration||'-')}</b></div>
       <div class="item"><small>Harga</small><b>${rupiah(o.price)}</b></div>
+      <div class="item"><small>Tanggal Order</small><b>${new Date(o.orderDate+'T00:00:00').toLocaleDateString('id-ID')}</b></div>
+      <div class="item"><small>Garansi Sampai</small><b>${w.end.toLocaleDateString('id-ID')}</b></div>
+    </div>
+    <div class="notice">
+      ID Order hanya digunakan untuk melihat detail pesanan. Untuk mengajukan garansi, masukkan kode garansi.
+    </div>
+  </section>`;
+}
+function warrantyCard(o,index){
+  const w=warranty(o);
+  return `<section class="card">
+    <h3>${esc(o.product)} <span class="badge ${w.cls}">${w.label}</span></h3>
+    <div class="resultgrid">
+      <div class="item"><small>Kode Garansi</small><b>${esc(o.warrantyCode)}</b></div>
+      <div class="item"><small>ID Order</small><b>${esc(o.orderId)}</b></div>
+      <div class="item"><small>Customer</small><b>${esc(o.customerName)}</b></div>
+      <div class="item"><small>WhatsApp</small><b>${esc(o.whatsapp)}</b></div>
+      <div class="item"><small>Produk</small><b>${esc(o.product)}</b></div>
       <div class="item"><small>Tanggal Order</small><b>${new Date(o.orderDate+'T00:00:00').toLocaleDateString('id-ID')}</b></div>
       <div class="item"><small>Garansi Sampai</small><b>${w.end.toLocaleDateString('id-ID')}</b></div>
     </div>
@@ -61,19 +75,16 @@ function card(o,index){
           id="issue-${index}"
           class="claim-issue"
           rows="5"
-          placeholder="Contoh: akun tidak bisa login, muncul notifikasi password salah, atau fitur premium tidak aktif..."
+          placeholder="Contoh: akun tidak bisa login, password salah, atau fitur premium tidak aktif..."
         ></textarea>
         <small class="claim-help">
-          Jelaskan kendala dengan lengkap. Screenshot bukti dapat dikirim manual setelah WhatsApp terbuka.
+          Jelaskan kendala dengan lengkap. Screenshot bukti dikirim manual setelah WhatsApp terbuka.
         </small>
-        <button
-          class="claim-btn"
-          data-index="${index}"
-          type="button">
+        <button class="claim-btn" data-index="${index}" type="button">
           Ajukan Garansi
         </button>
       </div>
-    ` : `<div class="notice">Masa garansi sudah berakhir.</div>`}
+    ` : `<div class="notice">Masa garansi sudah berakhir dan tidak dapat diklaim.</div>`}
   </section>`;
 }
 
@@ -94,11 +105,11 @@ async function submitClaim(index){
 
   const text=`📋 PENGAJUAN GARANSI JUASTORE
 
+🔐 Kode Garansi: ${o.warrantyCode}
 🆔 ID Order: ${o.orderId}
 👤 Nama: ${o.customerName}
 📱 WhatsApp: ${o.whatsapp}
 📦 Produk: ${o.product}
-💰 Harga: ${rupiah(o.price)}
 📅 Tanggal Order: ${new Date(o.orderDate+'T00:00:00').toLocaleDateString('id-ID')}
 
 📝 Kendala:
@@ -108,22 +119,31 @@ ${issue}
 
 Mohon diproses. Terima kasih.`;
 
-  const admin='6285111662004';
-  window.open(`https://wa.me/${admin}?text=${encodeURIComponent(text)}`,'_blank','noopener');
+  window.open(
+    `https://wa.me/6285111662004?text=${encodeURIComponent(text)}`,
+    '_blank',
+    'noopener'
+  );
 }
 
 async function search(){
   const raw=$('search').value.trim();
-  if(!raw)return showMsg('Masukkan ID Order atau nomor WhatsApp.');
+  if(!raw)return showMsg('Masukkan ID Order, nomor WhatsApp, atau kode garansi.');
 
   $('searchBtn').disabled=true;
   $('message').classList.add('hidden');
 
   try{
     let data=[];
+    let claimMode=false;
+    const upper=raw.toUpperCase();
 
-    if(/^JS\d+/i.test(raw)){
-      const d=await db.collection('publicOrders').doc(raw.toUpperCase()).get();
+    if(/^JS-GR-[A-Z0-9]+$/i.test(raw)){
+      claimMode=true;
+      const d=await db.collection('warrantyLookups').doc(upper).get();
+      if(d.exists)data=[d.data()];
+    }else if(/^JS\d+$/i.test(raw)){
+      const d=await db.collection('publicOrders').doc(upper).get();
       if(d.exists)data=[d.data()];
     }else{
       const wa=normWa(raw);
@@ -133,17 +153,24 @@ async function search(){
 
     if(!data.length){
       currentResults=[];
-      return showMsg('Data pesanan tidak ditemukan. Periksa kembali ID Order atau nomor WhatsApp.');
+      return showMsg(
+        claimMode
+          ? 'Kode garansi tidak ditemukan. Periksa kembali kode yang dimasukkan.'
+          : 'Data pesanan tidak ditemukan. Periksa kembali ID Order atau nomor WhatsApp.'
+      );
     }
 
     currentResults=data;
-    $('results').innerHTML=data.map(card).join('');
+    $('results').innerHTML=claimMode
+      ? data.map(warrantyCard).join('')
+      : data.map(orderCard).join('');
     $('results').classList.remove('hidden');
 
-    document.querySelectorAll('.claim-btn').forEach(btn=>{
-      btn.addEventListener('click',()=>submitClaim(Number(btn.dataset.index)));
-    });
-
+    if(claimMode){
+      document.querySelectorAll('.claim-btn').forEach(btn=>{
+        btn.addEventListener('click',()=>submitClaim(Number(btn.dataset.index)));
+      });
+    }
   }catch(e){
     showMsg('Pencarian gagal: '+e.message);
   }finally{

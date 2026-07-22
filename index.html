@@ -2,8 +2,12 @@
 <title>Cek Pesanan JuaStore</title><link rel="stylesheet" href="app.css"></head><body><div class="wrap">
 <header class="top"><div class="brand"><div class="logo">JS</div><div><h2>Cek Pesanan & Garansi</h2><small>JuaStore</small></div></div><a class="btn" href="admin.html">Admin</a></header>
 <section class="card">
-<h3>Cari Data Pesanan</h3><p>Masukkan <b>ID Order</b> atau <b>nomor WhatsApp</b> yang digunakan saat order.</p>
-<div class="searchbar"><input id="search" placeholder="Contoh: JS2607220001 atau 628xxxx"><button id="searchBtn">Cari</button></div>
+<h3>Cari Data Pesanan</h3>
+<p>Masukkan <b>ID Order</b>, <b>nomor WhatsApp</b>, atau <b>kode garansi</b>.</p>
+<div class="notice">
+  ID Order/WhatsApp hanya untuk melihat detail pesanan. Klaim garansi hanya dapat dilakukan menggunakan kode garansi.
+</div>
+<div class="searchbar"><input id="search" placeholder="JS2607230001 / 628xxxx / JS-GR-XXXXXXX"><button id="searchBtn">Cari</button></div>
 <div id="message" class="notice hidden"></div>
 </section>
 <section id="results" class="hidden"></section>

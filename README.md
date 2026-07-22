@@ -40,3 +40,12 @@ Buka data lama melalui admin lalu tekan Edit → Simpan Perubahan agar data ters
 - Data sensitif akun hanya disimpan di koleksi `orders` yang membutuhkan login admin.
 - Data sensitif tidak disalin ke `publicOrders` atau `customerLookups`.
 - Tetap dapat digunakan tanpa Firebase Blaze dan tanpa Firebase Storage.
+
+
+## Update V6 — Klaim Hanya dengan Kode Garansi
+- Kode garansi `JS-GR-XXXXXXX` menjadi satu-satunya akses untuk tombol klaim garansi.
+- ID Order hanya menampilkan detail pesanan dan tanggal order, tanpa tombol klaim.
+- Pencarian nomor WhatsApp juga hanya menampilkan detail pesanan, tanpa tombol klaim.
+- Koleksi baru: `warrantyLookups`.
+- Publish ulang isi `firestore.rules`.
+- Untuk data lama, buka melalui admin lalu Edit → Simpan Perubahan agar kode garansi masuk ke `warrantyLookups`.

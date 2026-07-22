@@ -56,10 +56,23 @@ function clearForm(){
  $('warrantyDays').value=30;$('cancelBtn').classList.add('hidden');$('saveBtn').textContent='Simpan Pesanan';
  const n=new Date();n.setMinutes(n.getMinutes()-n.getTimezoneOffset());$('orderDate').value=n.toISOString().slice(0,10)
 }
-async function savePublic(order){
+async function savePublic(order,old=null){
  const clean=publicOrder(order), batch=db.batch();
+ const code=String(order.warrantyCode||'').toUpperCase();
+
  batch.set(db.collection('publicOrders').doc(order.orderId),clean);
  batch.set(db.collection('customerLookups').doc(order.whatsapp).collection('orders').doc(order.orderId),clean);
+ if(code)batch.set(db.collection('warrantyLookups').doc(code),clean);
+
+ if(old){
+  const oldCode=String(old.warrantyCode||'').toUpperCase();
+  if(old.whatsapp&&old.whatsapp!==order.whatsapp){
+   batch.delete(db.collection('customerLookups').doc(old.whatsapp).collection('orders').doc(order.orderId));
+  }
+  if(oldCode&&oldCode!==code){
+   batch.delete(db.collection('warrantyLookups').doc(oldCode));
+  }
+ }
  await batch.commit();
 }
 $('loginBtn').onclick=async()=>{try{await auth.signInWithEmailAndPassword($('email').value,$('password').value)}catch(e){msg('loginMsg','Login gagal: '+e.message)}};
@@ -76,7 +89,7 @@ $('saveBtn').onclick=async()=>{
     const old=orders.find(x=>x.id===editingId); data.orderId=old.orderId;
     data.updatedAt=firebase.firestore.FieldValue.serverTimestamp();
     await db.collection('orders').doc(editingId).set(data,{merge:true});
-    await savePublic(data);
+    await savePublic(data,old);
   }else{
     data.orderId=await nextOrderId();
     data.createdAt=firebase.firestore.FieldValue.serverTimestamp();
@@ -121,7 +134,7 @@ function templateWarranty(o){
   `📅 Tanggal Order : ${new Date(o.orderDate+'T00:00:00').toLocaleDateString('id-ID')}`,
   `⏳ Garansi Sampai : ${w.end.toLocaleDateString('id-ID')}`,'',
   '🔎 Cek garansi di:','https://juastorepremium.biz.id/','',
-  'Simpan ID Order dan kode garansi ini. Keduanya diperlukan saat mengajukan garansi.'
+  'Gunakan kode garansi untuk mengajukan klaim. ID Order hanya untuk melihat detail pesanan.'
  ].join('\n');
 }
 async function copyText(text){
@@ -151,8 +164,12 @@ window.editOrder=id=>{
 window.deleteOrder=async id=>{
  const o=orders.find(x=>x.id===id);if(!o||!confirm('Hapus pesanan '+o.orderId+'?'))return;
  try{
-  const batch=db.batch();batch.delete(db.collection('orders').doc(id));batch.delete(db.collection('publicOrders').doc(o.orderId));
-  batch.delete(db.collection('customerLookups').doc(o.whatsapp).collection('orders').doc(o.orderId));await batch.commit();
+  const batch=db.batch();
+  batch.delete(db.collection('orders').doc(id));
+  batch.delete(db.collection('publicOrders').doc(o.orderId));
+  batch.delete(db.collection('customerLookups').doc(o.whatsapp).collection('orders').doc(o.orderId));
+  if(o.warrantyCode)batch.delete(db.collection('warrantyLookups').doc(String(o.warrantyCode).toUpperCase()));
+  await batch.commit();
  }catch(e){alert('Gagal menghapus: '+e.message)}
 };
 clearForm();
