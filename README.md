@@ -21,3 +21,12 @@ Fitur:
 ## Penting
 Data lama yang dibuat sebelum versi ini belum memiliki salinan pada `publicOrders` dan `customerLookups`.
 Buka data lama melalui admin lalu tekan Edit → Simpan Perubahan agar data tersebut dapat dicari oleh customer.
+
+
+## Update V4 — Form Kendala Sebelum Ajukan Garansi
+- Customer wajib menulis kendala terlebih dahulu.
+- Tombol Ajukan Garansi baru membuka WhatsApp jika kendala sudah diisi.
+- Pesan WhatsApp otomatis berisi data order dan kendala customer.
+- Screenshot belum di-upload ke Firebase Storage.
+- Customer mengirim screenshot secara manual setelah pesan WhatsApp terkirim.
+- Cocok untuk Firebase Spark / tanpa Blaze.

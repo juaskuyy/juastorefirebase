@@ -15,3 +15,31 @@ table{width:100%;border-collapse:collapse;min-width:900px}th,td{padding:11px;bor
 .searchbar{display:flex;gap:10px}.searchbar input{flex:1}.resultgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.item{padding:12px;background:#ededf0;border-radius:10px}.item small{display:block;color:var(--muted);margin-bottom:5px}
 @media(max-width:850px){.grid,.formgrid{grid-template-columns:1fr 1fr}.top{align-items:flex-start}.resultgrid{grid-template-columns:1fr}}
 @media(max-width:560px){.grid,.formgrid{grid-template-columns:1fr}.wrap{padding:12px}.searchbar{flex-direction:column}}
+
+
+.claim-box{
+  margin-top:16px;
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#efeff1;
+}
+.claim-box label{
+  display:block;
+  margin-bottom:8px;
+}
+.claim-issue{
+  min-height:120px;
+  resize:vertical;
+}
+.claim-help{
+  display:block;
+  margin-top:8px;
+  color:var(--muted);
+  line-height:1.5;
+}
+.claim-btn{
+  margin-top:14px;
+  width:100%;
+  min-height:48px;
+}
