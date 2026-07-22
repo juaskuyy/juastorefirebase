@@ -1,0 +1,44 @@
+<!doctype html><html lang='id'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Cek Garansi JuaStore</title><style>
+:root{--bg:#a5a5aa;--panel:#e5e5e7;--card:#f7f7f8;--dark:#2d2d31;--line:#626268;--muted:#68686d}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(145deg,#b7b7bb,#85858b);color:#202024;min-height:100vh}
+.wrap{width:min(1200px,calc(100% - 24px));margin:auto}header{background:#e2e2e5;border-bottom:2px solid #55555b;position:sticky;top:0;z-index:5}
+.head{min-height:74px;display:flex;justify-content:space-between;align-items:center}.brand{display:flex;gap:12px;align-items:center}.logo{width:52px;height:52px;border-radius:13px;background:#35353a;color:#fff;display:grid;place-items:center;font-weight:900;font-size:24px;box-shadow:5px 5px 0 #929298}
+.brand h2{margin:0}.brand p{margin:3px 0 0;color:var(--muted);font-size:13px}nav a{margin-left:8px;text-decoration:none;font-weight:800;padding:10px 12px;border-radius:10px}nav a.active{background:#2d2d31;color:white}
+main{padding:28px 0}.panel{background:rgba(235,235,237,.97);border:2px solid #55555b;border-radius:18px;box-shadow:0 18px 40px rgba(20,20,24,.18)}.inside{padding:20px}
+.grid{display:grid;grid-template-columns:360px 1fr;gap:20px;align-items:start}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.stat{background:var(--card);border:2px solid var(--line);border-radius:13px;padding:15px}.stat b{display:block;font-size:28px;margin-top:6px}
+.field{margin-bottom:12px}label{display:block;font-weight:900;margin-bottom:6px}input,textarea,select{width:100%;padding:11px;border:2px solid #6c6c72;border-radius:10px;background:white;font-size:14px}textarea{min-height:95px}
+.form2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.full{grid-column:1/-1}.btn{border:2px solid #303034;border-radius:10px;padding:11px 13px;font-weight:900;cursor:pointer;background:#3d3d42;color:white}.btn.secondary{background:#c9c9cd;color:#202024}.btn.danger{background:#623838}.btn.small{padding:7px 9px;font-size:12px}.actions{display:flex;gap:8px;flex-wrap:wrap}
+.toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}.toolbar input{max-width:390px}.table-wrap{overflow:auto;border:2px solid var(--line);border-radius:12px;background:white}
+table{width:100%;border-collapse:collapse;min-width:950px}th,td{padding:10px;border-bottom:1px solid #d2d2d5;text-align:left;font-size:13px}th{background:#d1d1d5}.muted{color:var(--muted)}.badge{padding:5px 8px;border-radius:999px;font-weight:900;font-size:12px}.active{background:#cfe7d5;color:#2f6c45}.soon{background:#f1e2b8;color:#85621b}.expired{background:#edcccc;color:#873a3a}.code{font-family:monospace;background:#2d2d31;color:white;padding:3px 6px;border-radius:6px}
+.login{max-width:430px;margin:60px auto}.summary{display:none;margin-top:18px}.summary.show{display:block}.row{display:grid;grid-template-columns:180px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid #d1d1d4}.value{font-weight:900}.hero{text-align:center;max-width:760px;margin:0 auto 20px}.claim{max-width:760px;margin:auto}footer{text-align:center;padding:25px;color:#333}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}nav{display:none}}@media(max-width:600px){.cards{grid-template-columns:1fr}.form2{grid-template-columns:1fr}.full{grid-column:auto}.toolbar{flex-direction:column;align-items:stretch}.row{grid-template-columns:1fr}}
+</style></head>
+<body><header><div class='wrap head'><div class='brand'><div class='logo'>JS</div><div><h2>JuaStore</h2><p>Cek Garansi & Klaim</p></div></div><nav><a class='active' href='index.html'>Cek Garansi</a><a href='https://juastore.my.id'>Kalkulator Refund</a></nav></div></header>
+<main class='wrap'><div class='hero'><h1>Cek Status Garansi</h1><p class='muted'>Masukkan kode klaim dan 4 digit terakhir nomor WhatsApp saat order.</p></div>
+<section class='panel claim'><div class='inside'><div class='form2'><div class='field'><label>Kode Klaim</label><input id='claimCode' placeholder='JS-XXXXXXXXXX'></div><div class='field'><label>4 digit terakhir WA</label><input id='wa4' maxlength='4' inputmode='numeric'></div></div><button id='checkBtn' class='btn'>Cek Data</button><div id='msg' class='muted' style='margin-top:10px'></div>
+<div id='summary' class='summary'><div class='row'><div>Nama</div><div id='sName' class='value'></div></div><div class='row'><div>Produk</div><div id='sProduct' class='value'></div></div><div class='row'><div>Harga</div><div id='sPrice' class='value'></div></div><div class='row'><div>Durasi</div><div id='sDuration' class='value'></div></div><div class='row'><div>Tanggal Order</div><div id='sDate' class='value'></div></div><div class='row'><div>Garansi Berakhir</div><div id='sEnd' class='value'></div></div><div class='row'><div>Status</div><div id='sStatus' class='value'></div></div><div class='row'><div>ID Order</div><div id='sOrder' class='value'></div></div>
+<hr style='margin:20px 0'><h2>Ajukan Garansi / Refund</h2><div class='field'><label>Masalah / Kendala</label><textarea id='problem'></textarea></div><div class='field'><label>Foto Bukti</label><input id='evidence' type='file' accept='image/*'></div><button id='shareBtn' class='btn'>Bagikan Teks + Foto</button><div class='muted' style='margin-top:10px;font-size:12px'>Pilih WhatsApp dari menu bagikan, lalu pilih Admin 1.</div></div>
+</div></section></main><footer>JuaStore – Premium Apps & Topup Game</footer>
+<script type='module'>
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js';
+import {getFirestore,doc,getDoc} from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js';
+const app=initializeApp({"apiKey": "AIzaSyCt8gPAPto9GX3cu-Btn9hbHoD8T28y7wU", "authDomain": "juastore-25a81.firebaseapp.com", "projectId": "juastore-25a81", "storageBucket": "juastore-25a81.firebasestorage.app", "messagingSenderId": "874449568775", "appId": "1:874449568775:web:d3c2c57dd5c833eb30d6a2"}),db=getFirestore(app),$=i=>document.getElementById(i);let current=null;
+const rp=n=>'Rp '+new Intl.NumberFormat('id-ID').format(Number(n)||0);
+function wi(o){let s=new Date(o.orderDate+'T00:00:00'),e=new Date(s);e.setDate(e.getDate()+Number(o.warrantyDays||0));let n=new Date();n.setHours(0,0,0,0);let d=Math.ceil((e-n)/86400000);return{e,d,status:d<0?'Garansi Habis':d<=3?'Garansi Hampir Habis':'Garansi Aktif'}}
+$('checkBtn').onclick=async()=>{$('msg').textContent='Mengecek...';$('summary').classList.remove('show');try{let c=$('claimCode').value.trim().toUpperCase(),w4=$('wa4').value.trim(),s=await getDoc(doc(db,'publicClaims',c));if(!s.exists())throw new Error('Kode klaim tidak ditemukan.');let o=s.data();if(o.whatsappLast4!==w4)throw new Error('4 digit nomor WA tidak sesuai.');current={...o,claimCode:c};let w=wi(o);$('sName').textContent=o.customerName;$('sProduct').textContent=o.product;$('sPrice').textContent=rp(o.price);$('sDuration').textContent=o.duration;$('sDate').textContent=new Date(o.orderDate+'T00:00:00').toLocaleDateString('id-ID');$('sEnd').textContent=w.e.toLocaleDateString('id-ID');$('sStatus').textContent=w.status;$('sOrder').textContent=o.orderId;$('msg').textContent='';$('summary').classList.add('show')}catch(e){$('msg').textContent=e.message}};
+$('shareBtn').onclick=async()=>{let f=$('evidence').files[0];if(!f){alert('Pilih foto bukti terlebih dahulu.');return}let w=wi(current),text=`📋 FORM GARANSI / REFUND – JuaStore
+
+👤 Customer: ${current.customerName}
+📦 Produk: ${current.product}
+💰 Harga: ${rp(current.price)}
+⏳ Durasi: ${current.duration}
+📅 Tanggal Order: ${new Date(current.orderDate+'T00:00:00').toLocaleDateString('id-ID')}
+🧾 ID Order: ${current.orderId}
+🔐 Kode Klaim: ${current.claimCode}
+🛡 Status: ${w.status}
+
+📝 Kendala:
+${$('problem').value||'-'}
+
+📎 Bukti screenshot terlampir.`;if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({title:'Klaim JuaStore',text,files:[f]})}catch(e){}}else{window.open('https://wa.me/6285111662004?text='+encodeURIComponent(text),'_blank');alert('Foto perlu dilampirkan manual pada browser ini.')}};
+</script></body></html>
