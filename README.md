@@ -30,3 +30,13 @@ Buka data lama melalui admin lalu tekan Edit → Simpan Perubahan agar data ters
 - Screenshot belum di-upload ke Firebase Storage.
 - Customer mengirim screenshot secara manual setelah pesan WhatsApp terkirim.
 - Cocok untuk Firebase Spark / tanpa Blaze.
+
+## Update V5 — Auto Copy & Kirim WhatsApp
+- Kode garansi otomatis dengan format `JS-GR-XXXXXXX`.
+- Kolom email/username, password, PIN/profil, dan detail tambahan produk.
+- Tombol **Salin Detail** untuk menyalin detail akun siap kirim.
+- Tombol **Salin Garansi** untuk menyalin ID Order, kode garansi, dan masa garansi.
+- Tombol **Kirim WA** langsung membuka WhatsApp customer dengan detail produk.
+- Data sensitif akun hanya disimpan di koleksi `orders` yang membutuhkan login admin.
+- Data sensitif tidak disalin ke `publicOrders` atau `customerLookups`.
+- Tetap dapat digunakan tanpa Firebase Blaze dan tanpa Firebase Storage.

@@ -30,8 +30,15 @@
  <div class="field"><label>Durasi Produk</label><input id="duration" placeholder="1 bulan"></div>
  <div class="field"><label>Garansi (hari) *</label><input id="warrantyDays" type="number" min="0" value="30"></div>
  <div class="field"><label>Metode Pembayaran</label><select id="payment"><option>DANA</option><option>GoPay</option><option>QRIS</option><option>Lainnya</option></select></div>
+ <div class="field"><label>Kode Garansi</label><input id="warrantyCode" readonly placeholder="Dibuat otomatis"></div>
+ <div class="field"><label>Email / Username Akun</label><input id="accountEmail" autocomplete="off" placeholder="Opsional"></div>
+ <div class="field"><label>Password Akun</label><input id="accountPassword" autocomplete="new-password" placeholder="Opsional"></div>
+ <div class="field"><label>PIN / Profil</label><input id="accountPin" autocomplete="off" placeholder="Opsional"></div>
+ <div class="field full"><label>Detail Tambahan Produk</label><textarea id="accountNotes" rows="4" placeholder="Contoh: Profil 1, login maksimal 1 device, atau petunjuk login"></textarea></div>
 </div>
+<div class="security-note">🔒 Detail akun hanya disimpan di koleksi admin. Email, password, PIN, dan catatan tidak dikirim ke data pencarian customer.</div>
 <div class="actions"><button id="saveBtn">Simpan Pesanan</button><button id="cancelBtn" class="secondary hidden">Batal Edit</button></div>
+<div class="template-help">Setelah disimpan, gunakan tombol <b>Salin Detail</b>, <b>Salin Garansi</b>, atau <b>Kirim WA</b> pada tabel pesanan.</div>
 <div id="formMsg" class="notice hidden"></div>
 </section>
 

@@ -43,3 +43,11 @@ table{width:100%;border-collapse:collapse;min-width:900px}th,td{padding:11px;bor
   width:100%;
   min-height:48px;
 }
+
+.formgrid .full{grid-column:1/-1}
+.security-note,.template-help{margin-top:12px;padding:11px 13px;border-radius:10px;background:#ededf0;color:var(--muted);font-size:13px;line-height:1.5}
+.row-actions{display:flex;gap:6px;flex-wrap:wrap;min-width:330px}
+.row-actions button{padding:8px 10px;font-size:12px}
+button.wa{background:#315a3a}
+button.danger{background:#7b3030}
+@media(max-width:560px){.formgrid .full{grid-column:auto}.row-actions{min-width:260px}}
